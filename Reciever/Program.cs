@@ -14,7 +14,8 @@ namespace Reciever
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            ReceiveMessagesAsync().GetAwaiter().GetResult();
+            Console.WriteLine("messages were received");
         }
 
         private static async Task ReceiveMessagesAsync()
