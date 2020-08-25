@@ -22,24 +22,17 @@ namespace Productor
 
         private static async Task SendMessagesAsync()
         {
-            var queueClient = new QueueClient(QueueConnectionString,
-            QueuePath);
-            queueClient.OperationTimeout = TimeSpan.FromSeconds(10);
-            var messages = " Hi,Hello,Hey,How are you,Be Welcome"
-                .Split(',')
+            _queueClient = new QueueClient(ConnectionString, QueuePath);
+            var messages = "Hi,Hello,Hey,How are you,Be Welcome"
+                .Split(",")
                 .Select(msg =>
                 {
                     Console.WriteLine($"Will send message: {msg}");
                     return new Message(Encoding.UTF8.GetBytes(msg));
                 })
-                .ToList();
-            var sendTask = queueClient.SendAsync(messages);
-            await sendTask;
-            CheckCommunicationExceptions(sendTask);
-            var closeTask = _queueClient.CloseAsync();
-            await closeTask;
-            CheckCommunicationExceptions(closeTask);
-
+                        .ToList();
+            await _queueClient.SendAsync(messages);
+            await _queueClient.CloseAsync();
         }
         public bool CheckCommunicationExceptions(Task task)
         {
@@ -54,5 +47,6 @@ namespace Productor
             });
             return false;
         }
+
     }
 }

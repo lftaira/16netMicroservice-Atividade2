@@ -24,6 +24,7 @@ namespace Reciever
                 new MessageHandlerOptions(ExceptionHandler) { AutoComplete = false });
             Console.ReadLine();
             await _queueClient.CloseAsync();
+
         }
 
         private static Task ExceptionHandler(ExceptionReceivedEventArgs exceptionArgs)
